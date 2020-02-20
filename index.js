@@ -1,6 +1,6 @@
 const cp = require('child_process');
 
-const out = cp.spawnSync('npm', ['--version']);
+const out = cp.spawnSync('npm', ['--version'], { shell: true });
 if (out.error) {
   console.error(out.error);
   process.exit(1);
