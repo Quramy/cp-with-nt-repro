@@ -1,8 +1,25 @@
 const cp = require('child_process');
 
-const out = cp.spawnSync('npm', ['--version'], { shell: true });
-if (out.error) {
-  console.error(out.error);
-  process.exit(1);
+function getProc() {
+  const proc = cp.spawn('npm', ['--version']);
+  return new Promise((res, rej) => {
+    proc.stdout.once('data', (message) => {
+      res(message.toString('utf8'));
+    });
+    proc.stderr.on('data', (message) => {
+      rej(message.toString('utf8'));
+    });
+  });
 }
-console.log(out.stdout.toString('utf8'));
+
+async function main() {
+  try {
+    const out = await getProc();
+    console.log(out);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+}
+
+main();
