@@ -1,7 +1,7 @@
 const cp = require('child_process');
 
 function getProc() {
-  const proc = cp.spawn('npm', ['--version']);
+  const proc = cp.spawn('npm', ['--version'], { shell: true });
   return new Promise((res, rej) => {
     proc.stdout.once('data', (message) => {
       res(message.toString('utf8'));
